@@ -20,13 +20,17 @@
     VSLEndpointConfiguration *endpointConfiguration = [[VSLEndpointConfiguration alloc] init];
     endpointConfiguration.logLevel = 4;
     endpointConfiguration.userAgent = [NSString stringWithFormat:@"iOS:%@-%@",[[NSBundle mainBundle] bundleIdentifier], [AppInfo currentAppVersion]];
+    
+    endpointConfiguration.transportConfigurations = @[[VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeTLS]];
+    endpointConfiguration.disableVideoSupport = YES;
+    endpointConfiguration.unregisterAfterCall = YES;
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UseTCPConnection"]) {
-    endpointConfiguration.transportConfigurations = @[[VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeTCP],
-                                                      [VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeUDP]];
-    } else {
-        endpointConfiguration.transportConfigurations = @[[VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeUDP]];
-    }
+//    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"UseTCPConnection"]) {
+//    endpointConfiguration.transportConfigurations = @[[VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeTCP],
+//                                                      [VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeUDP]];
+//    } else {
+//        endpointConfiguration.transportConfigurations = @[[VSLTransportConfiguration configurationWithTransportType:VSLTransportTypeUDP]];
+//    }
 
     NSError *error;
     BOOL success = [[VialerSIPLib sharedInstance] configureLibraryWithEndPointConfiguration:endpointConfiguration error:&error];
